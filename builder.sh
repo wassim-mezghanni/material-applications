@@ -14,6 +14,12 @@ GITHUB_REPO=$1
 DOCKER_REPO=$2
 TEMP_DIR="temp_cloned_repo"
 
+# Login to Docker Hub if credentials are provided
+if [ -n "$DOCKER_USER" ] && [ -n "$DOCKER_PWD" ]; then
+    echo "Logging in to Docker Hub..."
+    echo "$DOCKER_PWD" | docker login -u "$DOCKER_USER" --password-stdin
+fi
+
 # 1. Clone the GitHub repository
 echo "Cloning https://github.com/${GITHUB_REPO}..."
 git clone "https://github.com/${GITHUB_REPO}.git" "$TEMP_DIR"
