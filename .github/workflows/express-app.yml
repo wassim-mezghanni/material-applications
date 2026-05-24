@@ -27,13 +27,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Downcase Docker Hub username
+        run: |
+          echo "DOCKERHUB_USERNAME_LC=$(echo "${{ secrets.DOCKERHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: express-app
           file: express-app/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/express-app:latest
+          tags: ${{ env.DOCKERHUB_USERNAME_LC }}/express-app:latest
           platforms: linux/amd64,linux/arm64
 
       - name: Trigger Render Deploy Hook
