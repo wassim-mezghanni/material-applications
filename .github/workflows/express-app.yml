@@ -35,3 +35,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/express-app:latest
           platforms: linux/amd64,linux/arm64
+
+      - name: Trigger Render Deploy Hook
+        run: |
+          curl -s "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
